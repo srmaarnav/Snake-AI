@@ -1,0 +1,65 @@
+Reinforcement learning is an area of ml concerned with how software agents ought to take action in an environment in order to maximize the notion of cumulative reward.
+RL is teaching a software agent how to behave in an environment by telling it how well it is doing.
+
+
+Deep Q Learning -> This approach extends reinforcement learning by using deep neural network to predict the actions. It is a feed forward neural
+
+COde has \following parts :
+	Game has play_step(action) and gives reward, game_score, over or not
+	
+	Agent has model and game
+	Training loop: where we get state from game and new action from state
+	from action ,we predict the model and get play_step, reward, game_pver and score
+	we remember the collected data and train the model, new_state, game_over and reward
+
+	Model has linear_QNet gets rememberd part, we use model.predict that gives next action
+
+
+Reward:
+	-eat food = +10
+	-game over = -10
+	-else = 0
+
+Action, using this three action, we can create a complete loop, that using 4 approach might be hard.
+	[1, 0, 0] -> straight
+	[0, 1, 0] -> right turn
+	[0, 0, 1] -> left turn
+
+
+State(11 values)
+[ danger straight, right, left
+
+  direction left, right , up, down
+  food left, right, up, down
+], we get it as boolean value
+[ 	0,0,0
+	0,1,0,0
+	0,1,0,1
+] means 	no danger in a=immediate vicinity, we are going right, food is at right and down position
+
+In feed forward neural net, input, hidden layer and output.
+In model, we have 11 values in state and three outputs.
+For input, we use state.
+for output, we get three values, where largest is taken as 1. e.g. [5.3,12,4] is [0,1,0]
+
+
+Deep Q Learning
+ Q value = Quality of action
+ 
+0. Init QValue(=init model)
+1. choose action(model.predict(state)), In beginning, we use random move, since we have less action data
+2. perform action
+3. measure reward
+4. update Qvalue(+train model)
+	Loop from 4 to 1
+
+
+To train the model, we need loss function that we have to optimize or minimize.
+
+Q Update Rule Simplified
+	
+	Q = model.predict(state0), i.e. initial state
+	Qnew = R + y.max(Q(state1))  
+	
+	Loss = (Qnew-Q)^2
+
